@@ -13,6 +13,11 @@ public class MemberRestController {
 
     private final MemberService memberService;
 
+    @GetMapping("/test")
+    public ResponseEntity<Void> testPage() {
+        return ResponseEntity.ok().build();
+    }
+
     @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody CreateMemberRequestDto createMemberRequestDto) {
         memberService.signUp(createMemberRequestDto);
