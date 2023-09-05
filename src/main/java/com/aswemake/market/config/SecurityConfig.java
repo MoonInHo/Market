@@ -27,6 +27,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/members/test").permitAll() // TODO test 사용 후 삭제
                         .requestMatchers("/api/members/sign-up").anonymous()
                         .anyRequest().authenticated()
                 )
@@ -35,8 +36,15 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginProcessingUrl("/api/members/sign-in")
                         .usernameParameter("userId")
-                        .defaultSuccessUrl("/api/members/test") //TODO success / failure handler 추가
+                        .defaultSuccessUrl("/api/members/test") // TODO success / failure handler 추가 테스트 사용 후 삭제
                         .failureUrl("/api/members/sign-in-fail")
+                )
+        ;
+        http
+                .logout(logout -> logout
+                        .logoutUrl("/api/members/sign-out")
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessUrl("/api/members/test") // TODO 테스트 사용 후 삭제
                 )
         ;
 
