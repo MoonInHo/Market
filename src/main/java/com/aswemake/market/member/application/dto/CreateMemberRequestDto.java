@@ -16,15 +16,13 @@ public class CreateMemberRequestDto {
     private String name;
     private String address;
     private String addressDetail;
-    private String contact;
 
     public Member toEntity() {
         return Member.createMember(
                 UserId.of(userId),
                 Password.of(password),
                 Name.of(name),
-                Address.of(address, addressDetail),
-                Contact.of(contact)
+                Address.of(address, addressDetail)
         );
     }
 }

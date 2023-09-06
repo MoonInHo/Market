@@ -22,4 +22,8 @@ public class Role {
     public SimpleGrantedAuthority createRole() {
         return new SimpleGrantedAuthority(this.role);
     }
+
+    public String role() {
+        return role;
+    }
 }

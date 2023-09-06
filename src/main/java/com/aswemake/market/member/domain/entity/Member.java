@@ -36,23 +36,18 @@ public class Member {
 
     @Embedded
     @Column(nullable = false)
-    private Contact contact;
-
-    @Embedded
-    @Column(nullable = false)
     private Role role;
 
-    private Member(UserId userId, Password password, Name name, Address address, Contact contact) {
+    private Member(UserId userId, Password password, Name name, Address address) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.address = address;
-        this.contact = contact;
         this.role = Role.of("ROLE_USER"); //TODO 전달받은 권한에 따라 user / admin 구분하게 변경
     }
 
-    public static Member createMember(UserId userId, Password password, Name name, Address address, Contact contact) {
-        return new Member(userId, password, name, address, contact);
+    public static Member createMember(UserId userId, Password password, Name name, Address address) {
+        return new Member(userId, password, name, address);
     }
 
     public void passwordEncrypt(String password) {
