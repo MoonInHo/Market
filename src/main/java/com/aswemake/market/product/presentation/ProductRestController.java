@@ -2,11 +2,14 @@ package com.aswemake.market.product.presentation;
 
 import com.aswemake.market.product.application.dto.CreateProductRequestDto;
 import com.aswemake.market.product.application.service.ProductService;
+import com.aswemake.market.product.infrastructure.dto.GetProductsResponseDto;
 import com.aswemake.market.product.infrastructure.dto.UpdateProductRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/products")
@@ -22,6 +25,11 @@ public class ProductRestController {
     ) {
         productService.createProduct(createProductRequestDto);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<GetProductsResponseDto>> getProducts() {
+        return ResponseEntity.ok(productService.getProducts());
     }
 
     @PatchMapping("/{productId}")

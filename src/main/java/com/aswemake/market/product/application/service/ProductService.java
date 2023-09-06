@@ -1,16 +1,20 @@
 package com.aswemake.market.product.application.service;
 
-import com.aswemake.market.exception.exception.ProductNotFoundException;
 import com.aswemake.market.exception.exception.DuplicateProductNameException;
+import com.aswemake.market.exception.exception.EmptyProductListException;
+import com.aswemake.market.exception.exception.ProductNotFoundException;
 import com.aswemake.market.product.application.dto.CreateProductRequestDto;
 import com.aswemake.market.product.domain.entity.Product;
 import com.aswemake.market.product.domain.repository.ProductRepository;
 import com.aswemake.market.product.domain.vo.Price;
 import com.aswemake.market.product.domain.vo.ProductName;
+import com.aswemake.market.product.infrastructure.dto.GetProductsResponseDto;
 import com.aswemake.market.product.infrastructure.dto.UpdateProductRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,16 @@ public class ProductService {
 
         Product product = createProductRequestDto.toEntity();
         productRepository.save(product);
+    }
+
+    @Transactional(readOnly = true)
+    public List<GetProductsResponseDto> getProducts() {
+
+        List<GetProductsResponseDto> products = productRepository.getProduct();
+        if (products.isEmpty()) {
+            throw new EmptyProductListException();
+        }
+        return products;
     }
 
     @Transactional
