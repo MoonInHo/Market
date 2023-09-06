@@ -38,6 +38,11 @@ public class ProductService {
         product.updatePrice(price);
     }
 
+    @Transactional
+    public void deleteProduct(Long productId) {
+        productRepository.deleteById(productId);
+    }
+
     protected void checkDuplicateProductName(CreateProductRequestDto createProductRequestDto) {
 
         ProductName productName = ProductName.of(createProductRequestDto.getProductName());
