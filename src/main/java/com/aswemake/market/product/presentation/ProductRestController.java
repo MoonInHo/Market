@@ -33,4 +33,13 @@ public class ProductRestController {
         productService.updateProduct(productId, updateProductRequestDto);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{productId}")
+    @PreAuthorize("hasRole('MART')")
+    public ResponseEntity<Void> deleteProduct(
+            @PathVariable Long productId
+    ) {
+        productService.deleteProduct(productId);
+        return ResponseEntity.ok().build();
+    }
 }
