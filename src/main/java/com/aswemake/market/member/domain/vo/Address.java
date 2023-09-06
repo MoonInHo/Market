@@ -26,4 +26,8 @@ public class Address {
         }
         return new Address(address, addressDetail);
     }
+
+    public String address() {
+        return address;
+    }
 }

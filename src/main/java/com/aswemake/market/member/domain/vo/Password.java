@@ -30,6 +30,6 @@ public class Password {
     }
 
     public String password() {
-        return this.password;
+        return password;
     }
 }

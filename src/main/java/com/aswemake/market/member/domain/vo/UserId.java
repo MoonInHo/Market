@@ -26,6 +26,6 @@ public class UserId {
     }
 
     public String userId() {
-        return this.userId;
+        return userId;
     }
 }
