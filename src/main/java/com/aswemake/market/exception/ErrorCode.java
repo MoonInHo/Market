@@ -1,6 +1,15 @@
 package com.aswemake.market.exception;
 
 public enum ErrorCode {
+
+    // Global
     INVALID_REQUEST,
-    DUPLICATE_PRODUCT_NAME_ERROR, DUPLICATE_USERID_ERROR
+
+    // Member
+    DUPLICATE_USERID_ERROR,
+
+    // Product
+    PRODUCT_NOT_FOUND_ERROR,
+    DUPLICATE_PRODUCT_NAME_ERROR,
+    UPDATE_FAILED_ERROR,
 }
