@@ -21,4 +21,8 @@ public class Price {
         }
         return new Price(price);
     }
+
+    public Integer price() {
+        return price;
+    }
 }

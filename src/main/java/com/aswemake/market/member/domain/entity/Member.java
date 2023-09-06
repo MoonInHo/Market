@@ -43,7 +43,7 @@ public class Member {
         this.password = password;
         this.name = name;
         this.address = address;
-        this.role = Role.of("ROLE_USER"); //TODO 전달받은 권한에 따라 user / admin 구분하게 변경
+        this.role = Role.of("ROLE_MART"); //TODO 전달받은 권한에 따라 user / admin 구분하게 변경 & 테스트 후 원복
     }
 
     public static Member createMember(UserId userId, Password password, Name name, Address address) {
