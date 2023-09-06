@@ -4,14 +4,18 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class Price {
 
     private final Integer price;
+    private final LocalDateTime timestamp;
 
     private Price(Integer price) {
         this.price = price;
+        this.timestamp = LocalDateTime.now();
     }
 
     public static Price of(Integer price) {
