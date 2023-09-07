@@ -28,6 +28,7 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    @Transactional(readOnly = true)
     protected void checkDuplicateUserId(CreateMemberRequestDto createMemberRequestDto) {
 
         UserId userId = UserId.of(createMemberRequestDto.getUserId());

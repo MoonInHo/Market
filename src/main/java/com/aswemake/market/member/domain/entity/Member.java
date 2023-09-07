@@ -1,12 +1,14 @@
 package com.aswemake.market.member.domain.entity;
 
 import com.aswemake.market.member.domain.vo.*;
+import com.aswemake.market.order.domain.entity.Order;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -39,6 +41,13 @@ public class Member {
     @Column(nullable = false)
     private Role role;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+    private List<Order> orders = new ArrayList<>();
+
+    private Member(Long id) {
+        this.id = id;
+    }
+
     private Member(UserId userId, Password password, Name name, Address address) {
         this.userId = userId;
         this.password = password;
@@ -49,6 +58,10 @@ public class Member {
 
     public static Member createMember(UserId userId, Password password, Name name, Address address) {
         return new Member(userId, password, name, address);
+    }
+
+    public static Member createKey(Long id) {
+        return new Member(id);
     }
 
     public void passwordEncrypt(PasswordEncoder passwordEncoder) {
