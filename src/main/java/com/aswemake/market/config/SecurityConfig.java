@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/api/members/test").permitAll() // TODO test 사용 후 삭제
                         .requestMatchers("/api/members/sign-up").anonymous()
+                        .requestMatchers("/api/products/**").permitAll()
                         .anyRequest().authenticated()
                 )
         ;

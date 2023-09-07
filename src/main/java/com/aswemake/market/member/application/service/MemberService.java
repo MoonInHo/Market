@@ -23,7 +23,8 @@ public class MemberService {
         checkDuplicateUserId(createMemberRequestDto);
 
         Member member = createMemberRequestDto.toEntity();
-        member.passwordEncrypt(passwordEncoder.encode(member.password()));
+        member.passwordEncrypt(passwordEncoder);
+
         memberRepository.save(member);
     }
 
