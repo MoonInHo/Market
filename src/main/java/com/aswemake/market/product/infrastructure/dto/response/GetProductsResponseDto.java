@@ -1,4 +1,4 @@
-package com.aswemake.market.product.infrastructure.dto;
+package com.aswemake.market.product.infrastructure.dto.response;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GetProductsResponseDto {
 
-    private String ProductName;
+    private Long id;
+    private String productName;
     private Integer price;
 }

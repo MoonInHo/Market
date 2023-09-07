@@ -4,6 +4,7 @@ import com.aswemake.market.member.application.dto.CreateMemberRequestDto;
 import com.aswemake.market.member.application.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

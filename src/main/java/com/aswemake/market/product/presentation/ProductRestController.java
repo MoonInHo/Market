@@ -2,8 +2,10 @@ package com.aswemake.market.product.presentation;
 
 import com.aswemake.market.product.application.dto.CreateProductRequestDto;
 import com.aswemake.market.product.application.service.ProductService;
-import com.aswemake.market.product.infrastructure.dto.GetProductsResponseDto;
-import com.aswemake.market.product.infrastructure.dto.UpdateProductRequestDto;
+import com.aswemake.market.product.infrastructure.dto.request.GetProductRequestDto;
+import com.aswemake.market.product.infrastructure.dto.response.GetProductResponseDto;
+import com.aswemake.market.product.infrastructure.dto.response.GetProductsResponseDto;
+import com.aswemake.market.product.infrastructure.dto.request.UpdateProductRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -28,8 +30,18 @@ public class ProductRestController {
     }
 
     @GetMapping
+    @PreAuthorize("permitAll()")
     public ResponseEntity<List<GetProductsResponseDto>> getProducts() {
         return ResponseEntity.ok(productService.getProducts());
+    }
+
+    @GetMapping("/{productId}")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<GetProductResponseDto> getProduct(
+            @PathVariable Long productId,
+            @RequestBody GetProductRequestDto getProductRequestDto
+    ) {
+        return ResponseEntity.ok(productService.getProduct(productId, getProductRequestDto));
     }
 
     @PatchMapping("/{productId}")

@@ -4,11 +4,14 @@ import com.aswemake.market.product.domain.vo.Price;
 import com.aswemake.market.product.domain.vo.ProductName;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicUpdate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@DynamicUpdate
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
 
@@ -25,6 +28,9 @@ public class Product {
     @Column(nullable = false)
     private Price price;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+    private List<ProductHistory> productHistories = new ArrayList<>();
+
     private Product(ProductName productName, Price price) {
         this.productName = productName;
         this.price = price;
@@ -34,18 +40,15 @@ public class Product {
         return new Product(productName, price);
     }
 
-    public void updatePrice(Price price) {
-        if (isPriceEquals(price)) {
-            throw new IllegalArgumentException("기존 가격으로 변경할 수 없습니다.");
-        }
-        this.price = price;
+    public ProductHistory addProductHistory() {
+        return ProductHistory.createProductHistory(productName, price, this);
+    }
+
+    public Long productId() {
+        return id;
     }
 
     public String productName() {
         return productName.productName();
-    }
-
-    private boolean isPriceEquals(Price price) {
-        return this.price.price().equals(price.price());
     }
 }

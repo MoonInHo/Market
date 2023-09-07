@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
 import java.util.List;
@@ -50,8 +51,8 @@ public class Member {
         return new Member(userId, password, name, address);
     }
 
-    public void passwordEncrypt(String password) {
-        this.password = Password.encodedPassword(password);
+    public void passwordEncrypt(PasswordEncoder passwordEncoder) {
+        this.password = Password.encodedPassword(passwordEncoder.encode(this.password.password()));
     }
 
     public List<GrantedAuthority> createRole() {
