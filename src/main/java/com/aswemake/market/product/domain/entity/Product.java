@@ -1,12 +1,11 @@
 package com.aswemake.market.product.domain.entity;
 
+import com.aswemake.market.order.domain.entity.OrderDetail;
 import com.aswemake.market.product.domain.vo.Price;
 import com.aswemake.market.product.domain.vo.ProductName;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +30,9 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductHistory> productHistories = new ArrayList<>();
 
+    @OneToMany(mappedBy = "product")
+    private List<OrderDetail> orderDetails = new ArrayList<>();
+
     private Product(ProductName productName, Price price) {
         this.productName = productName;
         this.price = price;
@@ -50,5 +52,9 @@ public class Product {
 
     public String productName() {
         return productName.productName();
+    }
+
+    public Integer price() {
+        return price.price();
     }
 }

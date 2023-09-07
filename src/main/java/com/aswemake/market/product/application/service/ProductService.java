@@ -88,6 +88,7 @@ public class ProductService {
         productRepository.deleteById(productId);
     }
 
+    @Transactional(readOnly = true)
     protected void checkDuplicateProductName(CreateProductRequestDto createProductRequestDto) {
 
         ProductName productName = ProductName.of(createProductRequestDto.getProductName());
