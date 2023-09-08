@@ -1,8 +1,14 @@
 package com.aswemake.market.order.application.service;
 
+import com.aswemake.market.coupon.application.strategy.CouponStrategy;
+import com.aswemake.market.coupon.application.strategy.CouponStrategyFactory;
+import com.aswemake.market.coupon.domain.repository.CouponRepository;
+import com.aswemake.market.coupon.infrastructure.dto.response.GetCouponResponseDto;
+import com.aswemake.market.exception.exception.CouponNotFoundException;
 import com.aswemake.market.exception.exception.EmptyOrderListException;
 import com.aswemake.market.order.domain.repository.OrderRepository;
 import com.aswemake.market.order.domain.vo.DeliveryTips;
+import com.aswemake.market.order.infrastructure.dto.request.GetOrderAmountRequestDto;
 import com.aswemake.market.order.infrastructure.dto.response.GetOrderDetailsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,21 +21,30 @@ import java.util.List;
 public class OrderAmountService {
 
     private final OrderRepository orderRepository;
+    private final CouponRepository couponRepository;
+    private final CouponStrategyFactory couponStrategyFactory;
 
     /**
-     * CRUD를 구현할 경우 Order 에 amount 필드를 추가하여
-     * Order 객체 생성시점에 application 에서 계산된
-     * orderId가 같은 orderDetails 의 합계를 전달하는 방식으로 구현 가능
+     * CRUD를 구현할 경우 Order Entity 에 amount, discountAmount 필드를 추가하여
+     * orderDetails 의 합계를 application 레벨에서 계산 후
+     * Order 객체 생성시점에 전달하는 방식으로 구현 가능
      */
     @Transactional(readOnly = true)
-    public Integer getOrderAmount(Long orderId) {
+    public Double getOrderAmount(Long orderId, GetOrderAmountRequestDto getOrderAmountRequestDto) {
 
         Integer amount = calculateTotalOrderAmount(orderId);
+        Integer deliveryTips = DeliveryTips.of(amount).deliveryTips();
 
-        DeliveryTips deliveryTipsObject = DeliveryTips.of(amount);
-        Integer deliveryTips = deliveryTipsObject.deliveryTips();
+        Double totalPrice = (double) (amount + deliveryTips);
 
-        return amount + deliveryTips;
+        if (isCountIdNotNull(getOrderAmountRequestDto)) {
+
+            GetCouponResponseDto coupon = getCoupon(getOrderAmountRequestDto);
+            CouponStrategy strategy = couponStrategyFactory.getStrategy(coupon.getCouponPolicy());
+
+            return strategy.applyDiscount(totalPrice, coupon.getDiscountValue());
+        }
+        return totalPrice;
     }
 
     @Transactional(readOnly = true)
@@ -50,5 +65,15 @@ public class OrderAmountService {
             throw new EmptyOrderListException();
         }
         return orderDetails;
+    }
+
+    @Transactional(readOnly = true)
+    protected GetCouponResponseDto getCoupon(GetOrderAmountRequestDto getOrderAmountRequestDto) {
+        return couponRepository.getCoupon(getOrderAmountRequestDto.couponId())
+                .orElseThrow(CouponNotFoundException::new);
+    }
+
+    private boolean isCountIdNotNull(GetOrderAmountRequestDto getOrderAmountRequestDto) {
+        return getOrderAmountRequestDto.couponId() != null;
     }
 }

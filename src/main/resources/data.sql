@@ -15,3 +15,6 @@ INSERT INTO ORDER_DETAIL (order_detail_id, order_id, product_id, quantity) VALUE
 INSERT INTO ORDER_DETAIL (order_detail_id, order_id, product_id, quantity) VALUES (4, 1, 4, 8);
 INSERT INTO ORDER_DETAIL (order_detail_id, order_id, product_id, quantity) VALUES (5, 2, 2, 2);
 INSERT INTO ORDER_DETAIL (order_detail_id, order_id, product_id, quantity) VALUES (6, 2, 3, 4);
+
+INSERT INTO COUPON (coupon_id, coupon_name, description, coupon_policy, coupon_scope, discount_value) VALUES (1, '테스트 10% 할인 쿠폰', '10% 할인 쿠폰', 'PERCENTAGE', 'ENTIRE_ORDER', 0.1);
+INSERT INTO COUPON (coupon_id, coupon_name, description, coupon_policy, coupon_scope, discount_value) VALUES (2, '테스트 5000원 할인 쿠폰', '5000원 할인 쿠폰', 'FIXED', 'SPECIFIC_PRODUCT', 5000);

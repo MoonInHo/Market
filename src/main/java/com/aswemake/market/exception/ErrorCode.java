@@ -16,4 +16,7 @@ public enum ErrorCode {
 
     // Order
     EMPTY_ORDER_LIST_ERROR,
+
+    // Coupon
+    COUPON_NOT_FOUND_ERROR,
 }
