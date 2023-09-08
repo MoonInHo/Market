@@ -9,8 +9,4 @@ import lombok.NoArgsConstructor;
 public class DiscountValue {
 
     private final Double discountValue;
-
-    private DiscountValue(Double discountValue) {
-        this.discountValue = discountValue;
-    }
 }

@@ -30,6 +30,11 @@ public class ProductService {
     private final ProductHistoryRepository productHistoryRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * 로컬 핸들러를 이용한 비동기 이벤트를 구현하였으나
+     * 추가적인 예외 상황을 대비하기 위해서는 메세지 큐 방식이나
+     * 저장소 방식 사용 권장
+     */
     @Transactional
     public void createProduct(CreateProductRequestDto createProductRequestDto) {
 

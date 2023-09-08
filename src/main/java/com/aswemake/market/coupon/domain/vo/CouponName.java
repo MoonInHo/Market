@@ -9,8 +9,4 @@ import lombok.NoArgsConstructor;
 public class CouponName {
 
     private final String couponName;
-
-    private CouponName(String couponName) {
-        this.couponName = couponName;
-    }
 }

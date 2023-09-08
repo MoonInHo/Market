@@ -44,24 +44,16 @@ public class Member {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
-    private Member(Long id) {
-        this.id = id;
-    }
-
     private Member(UserId userId, Password password, Name name, Address address) {
         this.userId = userId;
         this.password = password;
         this.name = name;
         this.address = address;
-        this.role = Role.of("ROLE_MART"); //TODO 전달받은 권한에 따라 user / admin 구분하게 변경 & 테스트 후 원복
+        this.role = Role.of("ROLE_USER"); // 가입시 기본 권한은 USER, 관리자(MART) 계정은 사전에 따로 준비
     }
 
     public static Member createMember(UserId userId, Password password, Name name, Address address) {
         return new Member(userId, password, name, address);
-    }
-
-    public static Member createKey(Long id) {
-        return new Member(id);
     }
 
     public void passwordEncrypt(PasswordEncoder passwordEncoder) {

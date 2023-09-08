@@ -26,8 +26,4 @@ public class OrderDetail {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "product_id")
     private Product product;
-
-    public void assignOrder(Order order) {
-        this.order = order;
-    }
 }

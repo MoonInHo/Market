@@ -14,7 +14,7 @@ public class DeliveryTips {
         this.deliveryTips = deliveryTips;
     }
 
-    public static DeliveryTips of(Integer amount) {
+    public static DeliveryTips of(double amount) {
         if (amount >= 20000) {
             return new DeliveryTips(0);
         }

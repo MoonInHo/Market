@@ -25,26 +25,24 @@ public class OrderAmountService {
     private final CouponStrategyFactory couponStrategyFactory;
 
     /**
-     * CRUD를 구현할 경우 Order Entity 에 amount, discountAmount 필드를 추가하여
+     * CRUD 를 구현할 경우 Order Entity 에 amount, discountAmount 필드를 추가하여
      * orderDetails 의 합계를 application 레벨에서 계산 후
      * Order 객체 생성시점에 전달하는 방식으로 구현 가능
      */
     @Transactional(readOnly = true)
     public Double getOrderAmount(Long orderId, GetOrderAmountRequestDto getOrderAmountRequestDto) {
 
-        Integer amount = calculateTotalOrderAmount(orderId);
-        Integer deliveryTips = DeliveryTips.of(amount).deliveryTips();
-
-        Double totalPrice = (double) (amount + deliveryTips);
+        double amount = calculateTotalOrderAmount(orderId);
+        double deliveryTips = DeliveryTips.of(amount).deliveryTips();
 
         if (isCountIdNotNull(getOrderAmountRequestDto)) {
 
             GetCouponResponseDto coupon = getCoupon(getOrderAmountRequestDto);
             CouponStrategy strategy = couponStrategyFactory.getStrategy(coupon.getCouponPolicy());
 
-            return strategy.applyDiscount(totalPrice, coupon.getDiscountValue());
+            return strategy.applyDiscount(amount, coupon.getDiscountValue());
         }
-        return totalPrice;
+        return amount + deliveryTips;
     }
 
     @Transactional(readOnly = true)

@@ -9,8 +9,4 @@ import lombok.NoArgsConstructor;
 public class Description {
 
     private final String description;
-
-    private Description(String description) {
-        this.description = description;
-    }
 }
