@@ -15,7 +15,7 @@ public class DeliveryTips {
     }
 
     public static DeliveryTips of(Integer amount) {
-        if (amount > 20000) {
+        if (amount >= 20000) {
             return new DeliveryTips(0);
         }
         return new DeliveryTips(3000);
