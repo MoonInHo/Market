@@ -22,7 +22,7 @@ public class Member {
     private Long id;
 
     @Embedded
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private UserId userId;
 
     @Embedded
