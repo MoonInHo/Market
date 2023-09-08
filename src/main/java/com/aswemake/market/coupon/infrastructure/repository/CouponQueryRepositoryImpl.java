@@ -25,8 +25,6 @@ public class CouponQueryRepositoryImpl implements CouponQueryRepository {
                                 GetCouponResponseDto.class,
                                 Expressions.asNumber(couponId).as("couponId"),
                                 coupon.couponPolicy,
-                                coupon.couponName.couponName,
-                                coupon.description.description,
                                 coupon.couponScope,
                                 coupon.discountValue.discountValue
                         )

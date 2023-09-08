@@ -30,7 +30,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
         return new UsernamePasswordAuthenticationToken(accountContext.getMember(), null, accountContext.getAuthorities());
     }
-    //TODO jwt로 변경 예정
+
+    /**
+     * UsernamePasswordAuthenticationToken 대신 JWT 사용 가능.
+     */
     @Override
     public boolean supports(Class<?> authentication) {
         return UsernamePasswordAuthenticationToken.class

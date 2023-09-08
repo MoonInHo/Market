@@ -22,12 +22,15 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * 로그인, 로그아웃 성공시 핸들러를 구현하여
+     * 추가적인 처리작업 가능
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/members/test").permitAll() // TODO test 사용 후 삭제
                         .requestMatchers("/api/members/sign-up").anonymous()
                         .requestMatchers("/api/products/**", "/api/orders/**").permitAll()
                         .anyRequest().authenticated()
@@ -37,7 +40,7 @@ public class SecurityConfig {
                 .formLogin(form -> form
                         .loginProcessingUrl("/api/members/sign-in")
                         .usernameParameter("userId")
-                        .defaultSuccessUrl("/api/members/test") // TODO success / failure handler 추가 테스트 사용 후 삭제
+                        .defaultSuccessUrl("/api/products")
                         .failureUrl("/api/members/sign-in-fail")
                 )
         ;
@@ -45,7 +48,7 @@ public class SecurityConfig {
                 .logout(logout -> logout
                         .logoutUrl("/api/members/sign-out")
                         .deleteCookies("JSESSIONID")
-                        .logoutSuccessUrl("/api/members/test") // TODO 테스트 사용 후 삭제
+                        .logoutSuccessUrl("/api/products")
                 )
         ;
 

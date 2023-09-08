@@ -43,7 +43,7 @@ public class ProductQueryRepositoryImpl implements ProductQueryRepository {
                                 product.price.price
                         )
                 )
-                .from(product) //TODO 카테고리로 분류 기능 추가
+                .from(product)
                 .fetch();
     }
 

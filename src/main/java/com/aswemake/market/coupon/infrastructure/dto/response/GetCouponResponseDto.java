@@ -11,8 +11,6 @@ public class GetCouponResponseDto {
 
     private Long id;
     private CouponPolicy couponPolicy;
-    private String couponName;
-    private String description;
     private CouponScope couponScope;
     private Double discountValue;
 }
