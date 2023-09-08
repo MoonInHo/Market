@@ -20,7 +20,7 @@ public class Product {
     private Long id;
 
     @Embedded
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private ProductName productName;
 
     @Embedded
@@ -30,7 +30,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<ProductHistory> productHistories = new ArrayList<>();
 
-    @OneToMany(mappedBy = "product")
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<OrderDetail> orderDetails = new ArrayList<>();
 
     private Product(ProductName productName, Price price) {
