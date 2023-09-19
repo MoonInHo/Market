@@ -1,15 +1,25 @@
 package com.aswemake.market.config;
 
+import com.aswemake.market.member.application.security.JwtFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -17,9 +27,19 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+    private final UserDetailsService userDetailsService;
+
+    @Value("${secret.key}")
+    private String secretKey;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationManager authenticationManager(List<AuthenticationProvider> providers) {
+        return new ProviderManager(providers);
     }
 
     /**
@@ -30,20 +50,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/members/sign-up").anonymous()
+                        .requestMatchers("/api/members/sign-up", "/api/members/sign-in").permitAll()
                         .requestMatchers("/api/products/**", "/api/orders/**").permitAll()
                         .anyRequest().authenticated()
                 )
-        ;
-        http
-                .formLogin(form -> form
-                        .loginProcessingUrl("/api/members/sign-in")
-                        .usernameParameter("userId")
-                        .defaultSuccessUrl("/api/products")
-                        .failureUrl("/api/members/sign-in-fail")
+                .sessionManagement(
+                        sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
+                .addFilterBefore(new JwtFilter(userDetailsService, secretKey), UsernamePasswordAuthenticationFilter.class)
         ;
+
         http
                 .logout(logout -> logout
                         .logoutUrl("/api/members/sign-out")
